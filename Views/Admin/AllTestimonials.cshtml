@@ -1,0 +1,66 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Testimonial>
+
+@{
+    ViewData["Title"] = "AllTestimonials";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>AllTestimonials</h1>
+
+<div class="card">
+ <div class="card-body">
+ <h4 class="card-title">Recipes</h4>
+  <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>            
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.Status.StatusType)
+             </td>
+            <td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Admin" asp-action="AcceptTestimonial" asp-route-id="@item.TestId">Accept</a>
+                    <a class="btn btn-danger" asp-controller="Admin" asp-action="RejectTestimonial" asp-route-id="@item.TestId">Reject</a>
+
+                </td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    </div>
+</div>
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Recipe>
+
+@{
+    ViewData["Title"] = "CategoryRecipes";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">recipes of same categories</h1>
+
+    </div>
+</div>
+
+
+<div class="container-xxl py-5">
+    <div class="container">
+     
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-6">
+                                <div class="d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid rounded" src="~/Home/img/menu-8.jpg" alt="" style="width: 80px;">
+                                    <div class="w-100 d-flex flex-column text-start ps-4">
+                                        <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                            <span>@item.Name</span>
+                                            <span class="text-primary">$@item.Price</span>
+                                        </h5>
+                                        <small class="fst-italic">@item.Description</small>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary" asp-action="RecipeDetails" asp-route-id="@item.RecipeId">Details</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

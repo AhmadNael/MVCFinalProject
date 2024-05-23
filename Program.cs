@@ -12,6 +12,7 @@ namespace MVCFinalProject
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ModelContext>(x => x.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);

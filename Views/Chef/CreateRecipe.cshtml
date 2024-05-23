@@ -1,0 +1,59 @@
+﻿@model Recipe
+
+@{
+    ViewData["Title"] = "CreateRecipes";
+    Layout = "~/Views/Shared/_ChefLayout.cshtml";
+}
+
+<h1>Create Recipe</h1>
+
+<h4>Recipe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateRecipe" method="post" enctype="multipart/form-data">
+            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>       
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="imgFile" class="control-label"></label>
+                <input asp-for="imgFile" class="form-control" type="file" />
+                <span asp-validation-for="imgFile" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group d-none">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

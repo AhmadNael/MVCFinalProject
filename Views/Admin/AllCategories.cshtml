@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Category>
+
+@{
+    ViewData["Title"] = "AllCategories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Categories</h4>
+        <p>
+            <a class="btn btn-primary" asp-action="AddCategorie">Create New</a>
+        </p>
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CategoryName)
+                        </th>
+                        <th> @Html.DisplayNameFor(model => model.CategoryImg)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CategoryName)
+                            </td>
+                            <td><img src="@Url.Content("~/Images/"+item.CategoryImg)" /></td>
+                            <td>
+                                <a class="btn btn-outline-primary" asp-action="EditCategory" asp-route-id="@item.CategoryId">Edit</a>
+                               @*  <a class="btn btn-primary" asp-action="DetailsCategory" asp-route-id="@item.CategoryId">Details</a> *@
+                                <a class="btn btn-danger" asp-action="DeleteCategory" asp-route-id="@item.CategoryId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

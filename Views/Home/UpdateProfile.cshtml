@@ -1,0 +1,69 @@
+﻿@model MVCFinalProject.Models.Login
+
+@{
+    ViewData["Title"] = "UpdateProfile";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">profile </h1>
+
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+<h4>Login</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+                <form asp-action="UpdateProfile">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Email" />
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label name="firstName" class="control-label">First name</label>
+                        <input name="firstName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label name="lastName" class="control-label">Last name</label>
+                        <input name="lastName" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        <label name="birthDate" class="control-label">Birthdate</label>
+                        <input type="date" name="birthDate" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        <label name="img" class="control-label">img</label>
+                        <input name="img" class="form-control" />
+
+                    </div>
+                    <div class="form-group d-none">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+    </div>
+</div>

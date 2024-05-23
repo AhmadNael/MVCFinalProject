@@ -1,0 +1,71 @@
+﻿@model MVCFinalProject.Models.Login
+
+@{
+    ViewData["Title"] = "ProfileDetails";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">ProfileDetails </h1>
+
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.User.LastName)
+            </td>
+
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+<div>
+    <a class="btn btn-primary mx-2" asp-action="UpdateProfile" asp-route-id="@Model.Email">Edit</a>
+   
+</div>
+    </div>
+
+</div>

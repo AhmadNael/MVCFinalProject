@@ -1,0 +1,64 @@
+﻿@model MVCFinalProject.Models.Login
+
+@{
+    ViewData["Title"] = "ProfileDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<
+<h1>Edit Profile</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Recipes</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Password)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User.LastName)
+                    </th>                                        
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                    <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.UserName)
+                    </td>                  
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.User.FirstName)
+                    </td>
+                    <td>
+                           @Html.DisplayFor(modelItem => Model.User.LastName)
+                    </td>                    
+                                    
+                    </td>
+                    </tr>
+               
+            </tbody>
+        </table>
+        <div>
+            <a class="btn btn-primary mx-2" asp-action="UpdateProfile" asp-route-id="@Model?.Email">Edit</a> 
+            <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>

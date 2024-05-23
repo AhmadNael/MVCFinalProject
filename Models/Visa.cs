@@ -5,7 +5,9 @@ namespace MVCFinalProject.Models;
 
 public partial class Visa
 {
-    public long CardNumber { get; set; }
+    public decimal Id { get; set; }
+
+    public string CardNumber { get; set; } = null!;
 
     public byte Cvc { get; set; }
 
@@ -14,8 +16,6 @@ public partial class Visa
     public string BillingAdrress { get; set; } = null!;
 
     public DateTime? ExpDate { get; set; }
-
-    public decimal? Amount { get; set; }
 
     public decimal? UserId { get; set; }
 

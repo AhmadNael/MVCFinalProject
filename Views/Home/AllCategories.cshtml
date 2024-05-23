@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Category>
+
+@{
+    ViewData["Title"] = "AllCategories";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">All Categories</h1>
+
+    </div>
+</div>
+
+
+<div class="container-xxl pt-5 pb-3">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Categories</h5>
+            <h1 class="mb-5">Any thing you want</h1>
+        </div>
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="team-item text-center rounded overflow-hidden">
+                        <div class="rounded-circle overflow-hidden m-4">
+                            <a asp-action="CategoryRecipes" asp-route-id="@item.CategoryId"><img class="img-fluid" src="img/team-1.jpg" alt=""></a>
+                        </div>
+                        <h5 class="mb-0">@item.CategoryName</h5>
+                        <small>Designation</small>
+                        <div class="d-flex justify-content-center mt-3">
+                            <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    
+                </div>
+            }
+        </div>
+    </div>
+</div>

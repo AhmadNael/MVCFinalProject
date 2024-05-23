@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Login>
+
+@{
+    ViewData["Title"] = "AllChefs";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">All Chefs</h1>
+
+    </div>
+</div>
+
+
+@* <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role.RoleId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+               
+                    <a class="btn btn-primary" asp-action="ChefRecipes" asp-route-id="@item.User.Id">Show Recipes</a>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@
+
+<div class="container-xxl pt-5 pb-3">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Team Members</h5>
+            <h1 class="mb-5">Our Master Chefs</h1>
+        </div>
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+             <div  class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="team-item text-center rounded overflow-hidden">
+                        <div class="rounded-circle overflow-hidden m-4">
+                            <a asp-action="ChefRecipes" asp-route-id="@item.User.Id"><img class="img-fluid" src="img/team-1.jpg" alt=""></a>
+                        </div>
+                        <h5 class="mb-0">@item.User.FirstName @item.User.LastName</h5>
+                        <small>Designation</small>
+                        
+                   </div>
+                  <a style="margin-left: 77px" class="btn btn-primary" asp-action="ChefRecipes" asp-route-id="@item.User.Id">Show Recipes</a>
+              </div>
+            }
+        </div>
+    </div>
+</div>

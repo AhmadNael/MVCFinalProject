@@ -59,15 +59,16 @@ namespace MVCFinalProject.Controllers
                     case 1:
                         HttpContext.Session.SetInt32("AdminId", (int)userLogin.UserId);
                      return RedirectToAction("Index", "Admin");
-                     
+                        
                     case 2:
                         HttpContext.Session.SetInt32("ChefId", (int)userLogin.UserId);
+                        
                         return RedirectToAction("Index", "Chef");                       
                     case 3:
                         HttpContext.Session.SetInt32("UserId", (int)userLogin.UserId);
                         return RedirectToAction("Index", "Home");                        
                 }
-                
+               
             }
             return View();
         }

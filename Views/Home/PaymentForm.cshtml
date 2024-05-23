@@ -1,0 +1,65 @@
+﻿@model MVCFinalProject.Models.Recipe
+
+@{
+    ViewData["Title"] = "PaymentForm";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">PaymentForm</h1>
+    </div>
+</div>
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Payment</h5>
+            <h1 class="mb-5">Complete Your Purchase</h1>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-12 col-lg-12">
+                <form asp-action="PaymentForm" method="post">
+                    <input class="d-none" name="id" value="@Model.RecipeId" />
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="cc-name" class="form-label">Name on card</label>
+                            <input type="text" class="form-control" id="cc-name" name="nameCard" placeholder="" required>
+                            <small class="text-muted">Full name as displayed on card</small>
+                            <div class="invalid-feedback">
+                                Name on card is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cc-number" class="form-label">Credit card number</label>
+                            <input type="text" class="form-control" id="cc-number" name="cardNumber" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Credit card number is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-expiration" class="form-label">Expiration</label>
+                            <input type="date" class="form-control" id="cc-expiration" name="expirationDate" required>
+                            <div class="invalid-feedback">
+                                Expiration date required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" name="cvc" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Security code required
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -84,11 +84,11 @@
                     <span class="nav-link">Navigation</span>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" asp-controller="Admin" asp-action="Index">
                         <span class="menu-icon">
                             <i class="mdi mdi-speedometer"></i>
                         </span>
-                        <span class="menu-title">Dashboard</span>
+                        <span class="menu-title">Statistics</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -96,14 +96,15 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-laptop"></i>
                         </span>
-                        <span class="menu-title">Basic UI Elements</span>
+                        <span class="menu-title">Manage</span>
                         <i class="menu-arrow"></i>
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-action="AllCategories" asp-controller="Admin">Categoreis</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-action="AllRecipes" asp-controller="Admin">Recipes</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-action="AllUsers" asp-controller="Admin">Users</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-action="AllTestimonials" asp-controller="Admin">Testimonials</a></li>
                         </ul>
                     </div>
                 </li>
@@ -329,8 +330,18 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                                <h6 class="p-3 mb-0">Profile</h6>
+                                
                                 <div class="dropdown-divider"></div>
+                                <a asp-action="profileDetails" asp-controller="Admin" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi mdi-account text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Profile</p>
+                                    </div>
+                                </a>
                                 <a class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon bg-dark rounded-circle">
@@ -364,7 +375,9 @@
                 </div>
             </nav>
             <!-- partial -->
+            <div class="main-panel">
         @RenderBody()
+            </div>
         </div>
         <!-- page-body-wrapper ends -->
     </div>

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Recipe>
+
+@{
+    ViewData["Title"] = "AllRecipes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Recipes</h4>
+        <form asp-action="AllRecipes"  class="nav-link mt-2 mt-md-0 d-none d-lg-flex search ">
+            <input type="date" name="startDate" class="form-control-sm mx-2">
+            <input type="date" name="endDate" class="form-control-sm mx-2">
+            <input type="text" name="name" class="form-control-sm mx-2" placeholder="Type recipe ">
+            <button type="submit" class="btn btn-primary mx-2">Search </button>
+        </form>
+        <hr />
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreationDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RecipeImg)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                            <td><img src="@Url.Content("~/Images/"+item.RecipeImg)" /></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                            </td>
+                            @switch (item.StatusId)
+                            {
+                                case 1:
+                                    <td>
+                                        <p class="badge badge-warning">Pending</p>
+                                    </td>
+                                    break;
+                                case 2:
+                                    <td>
+                                        <div class="badge badge-success">Accepted</div>
+                                        
+                                    </td>
+                                    break;
+                                case 3:
+                                    <td>
+                                        <div class="badge badge-danger">Regected</div>
+                                    </td>
+                                    break;
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FirstName )
+                                @Html.DisplayFor(modelItem => item.User.LastName)
+                            </td>                          
+                            <td>
+
+                                    <a class="btn btn-primary" asp-controller="Admin" asp-action="AcceptRecipe" asp-route-id="@item.RecipeId">Accept</a>
+                                    <a class="btn btn-danger" asp-controller="Admin" asp-action="RejectRecipe" asp-route-id="@item.RecipeId">Reject</a>
+
+                            </td>                        
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

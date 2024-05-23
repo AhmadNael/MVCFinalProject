@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Recipe>
+
+@{
+    ViewData["Title"] = "AllRecipes";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">All Recipes</h1>
+
+    </div>
+</div>
+
+
+
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
+            <h1 class="mb-5">Most Popular Items</h1>
+        </div>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <form asp-action="AllRecipes" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search ">
+                            <input type="date" name="startDate" class="form-control-sm mx-2 d-none">
+                            <input type="date" name="endDate" class="form-control-sm mx-2 d-none">
+                            <input class="badge-outline-primary" type="text" name="name" class="form-control-sm mx-2" placeholder="Type recipe ">
+                            <button type="submit" class="btn btn-primary mx-2">Search </button>
+                        </form>
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-6">
+                                <div class="d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid rounded" src="~/Home/img/menu-8.jpg" alt="" style="width: 80px;">
+                                    <div class="w-100 d-flex flex-column text-start ps-4">
+                                        <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                            <span>@item.Name</span>
+                                            <span class="text-primary">$@item.Price</span>
+                                        </h5>
+                                        <small class="fst-italic">@item.Description</small>
+                                    </div>
+                                </div>
+                                
+                                <a class="btn btn-primary" asp-controller="Home" asp-action="PaymentForm" asp-route-id="@item.RecipeId">Buy Recipe</a>
+                            </div>
+
+                        }                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

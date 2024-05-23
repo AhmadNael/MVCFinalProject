@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Testimonial>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Testemonial</h1>
+
+    </div>
+</div>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.StatusType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TestId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TestId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TestId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
