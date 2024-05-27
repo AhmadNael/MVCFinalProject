@@ -26,14 +26,12 @@
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item text-center rounded overflow-hidden">
                         <div class="rounded-circle overflow-hidden m-4">
-                            <a asp-action="CategoryRecipes" asp-route-id="@item.CategoryId"><img class="img-fluid" src="img/team-1.jpg" alt=""></a>
+                            <a asp-action="CategoryRecipes" asp-route-id="@item.CategoryId"><img src="@Url.Content("~/Images/"+item.CategoryImg)" width="350" /></a>
                         </div>
                         <h5 class="mb-0">@item.CategoryName</h5>
                         <small>Designation</small>
                         <div class="d-flex justify-content-center mt-3">
-                            <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+                            
                         </div>
                     </div>
                     

@@ -410,10 +410,14 @@ public partial class ModelContext : DbContext
 
         modelBuilder.Entity<VisaChecker>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("VISA_CHECKER");
+            entity.HasKey(e => e.Id).HasName("SYS_C008624");
 
+            entity.ToTable("VISA_CHECKER");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("ID");
             entity.Property(e => e.Balance)
                 .HasColumnType("NUMBER(10,2)")
                 .HasColumnName("BALANCE");

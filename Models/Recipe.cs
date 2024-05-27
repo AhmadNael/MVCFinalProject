@@ -25,6 +25,7 @@ public partial class Recipe
     public decimal? StatusId { get; set; }
 
     public string? RecipeInfo { get; set; }
+
     [NotMapped]
     public IFormFile? imgFile { get; set; }
 
@@ -35,5 +36,4 @@ public partial class Recipe
     public virtual Status? Status { get; set; }
 
     public virtual Userinfo? User { get; set; }
-
 }

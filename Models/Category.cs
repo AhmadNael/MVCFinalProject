@@ -11,9 +11,8 @@ public partial class Category
     public string? CategoryName { get; set; }
 
     public string? CategoryImg { get; set; }
-        
+
     [NotMapped]
     public IFormFile? imgFile { get; set; }
-
     public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
 }

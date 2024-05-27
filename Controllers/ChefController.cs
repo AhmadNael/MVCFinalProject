@@ -117,17 +117,24 @@ namespace MVCFinalProject.Controllers
         public IActionResult CreateRecipe()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
-            ViewData["UserId"] = new SelectList(_context.Userinfos, "Id", "Id");
             return View();
         }
 
         // POST: Recipes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateRecipe([Bind("RecipeId,Price,Description,CreationDate,RecipeImg,Name,CategoryId,UserId,imgFile")] Recipe recipe)
+        public async Task<IActionResult> CreateRecipe([Bind("RecipeId,Price,Description,CreationDate,RecipeImg,Name,CategoryId,imgFile")] Recipe recipe)
         {
+            var session_id = HttpContext.Session.GetInt32("ChefId");
+            if (session_id == null)
+            {
+                // Handle the case where the session ID is null (e.g., user not logged in)
+                return RedirectToAction("Login", "Account");
+            }
+
+              // Set the user ID from the session
+              // Set the status to 1 by default
+
             if (recipe.imgFile != null)
             {
                 recipe.RecipeImg = await UploadImg(recipe.imgFile);
@@ -135,12 +142,15 @@ namespace MVCFinalProject.Controllers
 
             if (ModelState.IsValid)
             {
+                recipe.UserId = session_id.Value;
+                recipe.StatusId = 1;
                 _context.Add(recipe);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", recipe.CategoryId);
-            ViewData["UserId"] = new SelectList(_context.Userinfos, "Id", "Id", recipe.UserId);
             return View(recipe);
         }
 

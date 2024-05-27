@@ -2,16 +2,30 @@
 @{
     ViewData["Title"] = "Home Page";
     Layout = "~/views/shared/_HomeLayout.cshtml";
+    
+   Userinfo user = ViewBag.name;
 }
 
 <div class="container-xxl py-5 bg-dark hero-header mb-5">
     <div class="container my-5 py-5">
         <div class="row align-items-center g-5">
             <div class="col-lg-6 text-center text-lg-start">
-                <h1 class="display-3 text-white animated slideInLeft">Welcome FirstName</h1>
-                <h3 class="display-3 text-white animated slideInLeft">Enjoy Our<br>Delicious Meal</h3>
-                <p class="text-white animated slideInLeft mb-4 pb-2">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                <a href="" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Book A Table</a>
+                <h1 class="display-3 text-white animated slideInLeft">Welcome @if (user != null)
+                    {
+                        @user.FirstName
+                    }
+                    </h1>
+                <h3 class="display-3 text-white animated slideInLeft">
+                   
+                    enjoy our
+                    
+                    <br>  collection
+                    of  recipes
+                </h3>
+                <p class="text-white animated slideInLeft mb-4 pb-2">
+                    Welcome to Restoran, your ultimate destination for purchasing the finest homemade recipes directly from renowned chefs to your kitchen.
+                </p>
+                
             </div>
             <div class="col-lg-6 text-center text-lg-end overflow-hidden">
                 <img class="img-fluid" src="~/Home/img/hero.png" alt="">
@@ -22,6 +36,10 @@
 <!-- Service Start -->
 <div class="container-xxl py-5">
     <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Services</h5>
+            <h1 class="mb-5">What we offer</h1>
+        </div>
         <div class="row g-4">
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="service-item rounded pt-3">
@@ -115,7 +133,7 @@
 </div> *@
 <!-- About End -->
 <!-- Menu Start -->
-<div class="container-xxl py-5">
+@* div class="container-xxl py-5">
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
@@ -143,7 +161,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 <!-- Menu End -->
 <!-- Reservation Start -->
 @* <div class="container-xxl py-5 px-0 wow fadeInUp" data-wow-delay="0.1s">
@@ -205,7 +223,7 @@
     </div>
 </div> *@
 
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@* <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content rounded-0">
             <div class="modal-header">
@@ -221,10 +239,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 <!-- Reservation Start -->
 <!-- Team Start -->
-<div class="container-xxl pt-5 pb-3">
+@* <div class="container-xxl pt-5 pb-3">
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h5 class="section-title ff-secondary text-center text-primary fw-normal">Team Members</h5>
@@ -289,7 +307,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 <!-- Team End -->
 <!-- Testimonial Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -304,7 +322,7 @@
                 <div class="testimonial-item bg-transparent border rounded p-4">
                     <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
                     <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-1.jpg" style="width: 50px; height: 50px;">
+                        <img class="img-fluid flex-shrink-0 rounded-circle" src="/Home/img/testimonial-1.jpg" style="width: 50px; height: 50px;">
                         <div class="ps-3">
                             <h5 class="mb-1">@item.User.FirstName</h5>
 

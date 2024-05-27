@@ -27,7 +27,7 @@ namespace MVCFinalProject.PDF
                 Directory.CreateDirectory(pdfDirectory);
             }
 
-            string fileName = $"AHMADnaelhi.{recipe.User.FirstName}.{recipe.User.LastName}.pdf";
+            string fileName = $"AhmadNael.{recipe.User.FirstName}.{recipe.User.LastName}.pdf";
             string path = Path.Combine(pdfDirectory, fileName);
 
             using (var stream = new FileStream(path, FileMode.Create))
@@ -37,7 +37,7 @@ namespace MVCFinalProject.PDF
                 document.Open();
 
                 var anyfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20);
-                document.Add(new Paragraph("ANYTHING FOR PFG", anyfont));
+                document.Add(new Paragraph("Restoran recipies", anyfont));
                 document.Add(new Paragraph("\n"));
 
                 var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
@@ -52,8 +52,7 @@ namespace MVCFinalProject.PDF
                 document.Add(new Paragraph($"Posted At: {recipe.CreationDate/*.ToString("dd/MMMM/yyyy")*/}", subTitleFont));
                 document.Add(new Paragraph("\n"));
                 document.Add(new Paragraph($"Price: ${recipe.Price}", subTitleFont));
-                document.Add(new Paragraph("\n"));
-
+                document.Add(new Paragraph("\n"));              
                 var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 14);
                 document.Add(new Paragraph("Description: ", bodyFont));
                 document.Add(new Paragraph(recipe.Description + ".", bodyFont));

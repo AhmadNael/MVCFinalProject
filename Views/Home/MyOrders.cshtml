@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Request>
+
+@{
+    ViewData["Title"] = "MyOrders";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">My Orders </h1>
+
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+<table class="table">
+    <thead>
+        <tr>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.RequsetDate)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Recipe)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.Recipe.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.RequsetDate)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Recipe.Name)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Recipe.Price)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+</div>

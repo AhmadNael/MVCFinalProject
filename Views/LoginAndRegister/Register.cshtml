@@ -10,14 +10,11 @@
             <div class="row flex-grow">
                 <div class="col-lg-4 mx-auto">
                     <div class="auth-form-light text-left p-5">
-                        <div class="brand-logo">
+                        @* <div class="brand-logo">
                             <img src="~/Chef/images/logo-dark.svg">
-                        </div>
-                        <h4>New here?</h4>
-                        <h6 class="font-weight-dark">
-                            Signing up is easy. It only takes a few steps,
-                            Can you specify your registration type?
-                        </h6>
+                        </div> *@
+                       
+                        <h3>Register</h3>
                         <form asp-action="Register" method="post" class="pt-3">
                             <!-- radio check box -->
                             <div class="form-check">
@@ -41,6 +38,15 @@
                                 <input asp-for="LastName" type="text" class="form-control form-control-lg" id="exampleInputUsername1" placeholder="Last name">
                             </div>
                             <div class="form-group">
+                                <input asp-for="Gender" type="text" class="form-control form-control-lg" id="exampleInputUsername1" placeholder="Gender">
+                                
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="BirthDate" class="control-label"></label>
+                                <input asp-for="BirthDate" class="form-control" />
+                                
+                            </div>
+                            <div class="form-group">
                                 <input type="email" name="Email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
                             </div>
                             <div class="form-group">
@@ -49,13 +55,13 @@
                             <div class="form-group">
                                 <input type="password" name="Password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
                             </div>
-                            <div class="mb-4">
+                            @* <div class="mb-4">
                                 <div class="form-check">
                                     <label class="form-check-label text-muted">
                                         <input type="checkbox" class="form-check-input"> I agree to all Terms & Conditions
                                     </label>
                                 </div>
-                            </div>
+                            </div> *@
 
                             <div type="button">
                                 <input type="submit" name="signup" class="form-submit" id="signup" value="Register ">

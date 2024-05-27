@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Recipes</h4>
+        <h2 class="card-title">Recipes</h2>
         <form asp-action="AllRecipes"  class="nav-link mt-2 mt-md-0 d-none d-lg-flex search ">
             <input type="date" name="startDate" class="form-control-sm mx-2">
             <input type="date" name="endDate" class="form-control-sm mx-2">
@@ -22,8 +22,15 @@
                 <thead>
                     <tr>
                         <th>
+                            Chef
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Price)
                         </th>
+                       
                         <th>
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
@@ -33,18 +40,14 @@
                         <th>
                             @Html.DisplayNameFor(model => model.RecipeImg)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
+                        
                         <th>
                             @Html.DisplayNameFor(model => model.Category)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Status)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.User)
-                        </th>
+                       
                         <th></th>
                     </tr>
                 </thead>
@@ -52,6 +55,13 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FirstName)
+                                @Html.DisplayFor(modelItem => item.User.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
@@ -62,9 +72,7 @@
                                 @Html.DisplayFor(modelItem => item.CreationDate)
                             </td>
                             <td><img src="@Url.Content("~/Images/"+item.RecipeImg)" /></td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
+                            
                             <td>
                                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
                             </td>
@@ -87,10 +95,7 @@
                                     </td>
                                     break;
                             }
-                            <td>
-                                @Html.DisplayFor(modelItem => item.User.FirstName )
-                                @Html.DisplayFor(modelItem => item.User.LastName)
-                            </td>                          
+                                                   
                             <td>
 
                                     <a class="btn btn-primary" asp-controller="Admin" asp-action="AcceptRecipe" asp-route-id="@item.RecipeId">Accept</a>

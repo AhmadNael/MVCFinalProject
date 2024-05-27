@@ -34,12 +34,26 @@ namespace MVCFinalProject.Controllers
         public IActionResult Index()
         {
             var id = HttpContext.Session.GetInt32("AdminId");
-            var user = _context.Userinfos.Where(x => x.Id == id).SingleOrDefault();
-            ViewBag.Users = _context.Logins.Where(x => x.RoleId == 3).Count();
-            ViewBag.Chefs = _context.Logins.Where(x => x.RoleId == 2).Count();
-            ViewBag.Recipes = _context.Recipes.Where(x => x.StatusId == 1).Count();
-            return View(user);
+            var user = _context.Userinfos.SingleOrDefault(x => x.Id == id);
+            ViewBag.Users = _context.Logins.Count(x => x.RoleId == 3);
+            ViewBag.Chefs = _context.Logins.Count(x => x.RoleId == 2);
+            ViewBag.Recipes = _context.Recipes.Count(x => x.StatusId == 2);
+            var requests = _context.Requests.ToList();
+            ViewBag.SumOfTaxes = requests.Sum(r => r.RequestTax ?? 0);
 
+            ViewBag.SummOfPending = _context.Recipes.Where(x => x.StatusId == 1).Count();
+            ViewBag.SummOfAccepting = _context.Recipes.Where(x => x.StatusId == 2).Count();
+            ViewBag.SummOfRejecting = _context.Recipes.Where(x => x.StatusId == 3).Count();
+
+            ViewBag.SummOfTestPending = _context.Testimonials.Where(x => x.StatusId == 1).Count();
+            ViewBag.SummOfTestAccepting = _context.Testimonials.Where(x => x.StatusId == 2).Count();
+            ViewBag.SummOfTestRejecting = _context.Testimonials.Where(x => x.StatusId == 3).Count();
+
+            ViewBag.NumberOfOrders = _context.Requests.Count(x => x.RequestTax >= 0);
+            ViewBag.NumberOfCategories = _context.Categories.Count( x => x.CategoryId >= 1 );
+            ViewBag.NumberOfTestmonials = _context.Testimonials.Count(x => x.StatusId == 1 || x.StatusId == 2);
+
+            return View(user);
         }
 
         public async Task<IActionResult> AllCategories ()
@@ -82,10 +96,12 @@ namespace MVCFinalProject.Controllers
             return View(category);
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditCategory(decimal? id)
         {
             var setion_id = HttpContext.Session.GetInt32("AdminId");
             var user = _context.Userinfos.Where(x => x.Id == setion_id).SingleOrDefault();
+
             if (id == null || _context.Categories == null)
             {
                 return NotFound();
@@ -96,25 +112,31 @@ namespace MVCFinalProject.Controllers
             {
                 return NotFound();
             }
+
             return View(category);
         }
 
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCategory(decimal id, [Bind("CategoryId,CategoryName")] Category category)
+        public async Task<IActionResult> EditCategory(decimal id, [Bind("CategoryId,CategoryName")] Category category, IFormFile imgFile)
         {
-            var setion_id = HttpContext.Session.GetInt32("AdminId");
-            var user = _context.Userinfos.Where(x => x.Id == setion_id).SingleOrDefault();
             if (id != category.CategoryId)
             {
                 return NotFound();
             }
 
+            var setion_id = HttpContext.Session.GetInt32("AdminId");
+            var user = _context.Userinfos.Where(x => x.Id == setion_id).SingleOrDefault();
+
             if (ModelState.IsValid)
             {
+                if (imgFile != null)
+                {
+                    // Upload the new image and update the category image path
+                    string uploadedImagePath = await UploadImg(imgFile);
+                    category.CategoryImg = uploadedImagePath;
+                }
+
                 try
                 {
                     _context.Update(category);
@@ -135,12 +157,16 @@ namespace MVCFinalProject.Controllers
             }
             return View(category);
         }
+
+
+
         private bool CategoryExists(decimal id)
         {
             return (_context.Categories?.Any(e => e.CategoryId == id)).GetValueOrDefault();
         }
 
         // GET: Categories/Delete/5
+        [HttpGet]
         public async Task<IActionResult> DeleteCategory(decimal? id)
         {
             var setion_id = HttpContext.Session.GetInt32("AdminId");
@@ -161,7 +187,7 @@ namespace MVCFinalProject.Controllers
         }
 
         // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteCategoryConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCategoryConfirmed(decimal id)
         {
@@ -169,17 +195,20 @@ namespace MVCFinalProject.Controllers
             var user = _context.Userinfos.Where(x => x.Id == setion_id).SingleOrDefault();
             if (_context.Categories == null)
             {
-                return Problem("Entity set 'ModelContext.Categories'  is null.");
+                return Problem("Entity set 'ModelContext.Categories' is null.");
             }
+
             var category = await _context.Categories.FindAsync(id);
             if (category != null)
             {
                 _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+       
 
         public async Task<IActionResult> DetailsCategory(decimal? id)
         {
@@ -276,10 +305,52 @@ namespace MVCFinalProject.Controllers
 
         }
 
+
+        
+
         public async Task<IActionResult> AllUsers()
         {
             var modelContext = _context.Logins.Include(l => l.Role).Include(l => l.User);
             return View(await modelContext.ToListAsync());
+        }
+
+        // GET: Logins/Delete/5
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (id == null || _context.Logins == null)
+            {
+                return NotFound();
+            }
+
+            var login = await _context.Logins
+                .Include(l => l.Role)
+                .Include(l => l.User)
+                .FirstOrDefaultAsync(m => m.Email == id);
+            if (login == null)
+            {
+                return NotFound();
+            }
+
+            return View(login);
+        }
+
+        // POST: Logins/Delete/5
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            if (_context.Logins == null)
+            {
+                return Problem("Entity set 'ModelContext.Logins'  is null.");
+            }
+            var login = await _context.Logins.FindAsync(id);
+            if (login != null)
+            {
+                _context.Logins.Remove(login);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -346,12 +417,52 @@ namespace MVCFinalProject.Controllers
             return View(model);
         }
 
+        // GET: Testimonials/Delete/5
+        public async Task<IActionResult> DeleteTestimonial(decimal? id)
+        {
+            if (id == null || _context.Testimonials == null)
+            {
+                return NotFound();
+            }
+
+            var testimonial = await _context.Testimonials
+                .Include(t => t.Status)
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(m => m.TestId == id);
+            if (testimonial == null)
+            {
+                return NotFound();
+            }
+
+            return View(testimonial);
+        }
+
+        // POST: Testimonials/Delete/5
+        [HttpPost, ActionName("DeleteTestimonial")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(decimal id)
+        {
+            if (_context.Testimonials == null)
+            {
+                return Problem("Entity set 'ModelContext.Testimonials'  is null.");
+            }
+            var testimonial = await _context.Testimonials.FindAsync(id);
+            if (testimonial != null)
+            {
+                _context.Testimonials.Remove(testimonial);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AllTestimonials));
+        }
+
         public string? GetEmail()
         {
             var id = HttpContext.Session.GetInt32("AdminId");
             var adminEmail = _context.Logins.Include(l => l.User).Include(l => l.Role).Where(l => l.UserId == id && l.Role.RoleId == 1).FirstOrDefault();
             return (adminEmail.Email); 
         }
+
 
         public async Task<IActionResult> ProfileDetails(string? id = null)
         {
@@ -449,6 +560,95 @@ namespace MVCFinalProject.Controllers
             return (_context.Logins?.Any(e => e.Email == id)).GetValueOrDefault();
         }
 
-      
+
+        // GET: Aboutus/Edit/5
+        public async Task<IActionResult> EditAboutUs(decimal? id)
+        {
+            if (id == null || _context.Aboutus == null)
+            {
+                return NotFound();
+            }
+
+            var aboutu = await _context.Aboutus.FindAsync(id);
+            if (aboutu == null)
+            {
+                return NotFound();
+            }
+            return View(aboutu);
+        }
+
+        // POST: Aboutus/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAboutUs(decimal id, [Bind("Id,ImgPath,Content")] Aboutu aboutu)
+        {
+            if (id != aboutu.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(aboutu);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AboutuExists(aboutu.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(aboutu);
+        }
+
+        private bool AboutuExists(decimal id)
+        {
+            return (_context.Aboutus?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        
+        [HttpGet]
+        public async Task<IActionResult> Orders()
+        {
+            var modelContext = _context.Requests.Include(r => r.Recipe).Include(r => r.User);
+            return View(await modelContext.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Orders(DateTime? startDate, DateTime? endDate, string name)
+        {
+            var modelContext = _context.Requests.Include(r => r.Recipe).Include(r => r.User).AsQueryable();
+
+            if (startDate.HasValue)
+            {
+                modelContext = modelContext.Where(x => x.RequsetDate >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                modelContext = modelContext.Where(x => x.RequsetDate <= endDate.Value);
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                modelContext = modelContext.Where(x => x.User!.FirstName!.Contains(name) || x.User!.LastName!.Contains(name));
+            }
+
+            var filteredModel = await modelContext.ToListAsync();
+            return View(filteredModel);
+        }
+
+
     }
 }

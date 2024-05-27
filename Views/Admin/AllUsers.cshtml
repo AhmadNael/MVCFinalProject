@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Users</h4>
+        <h2 class="card-title">Users</h2>
 
         <div class="table-responsive">
             <table class="table ">
@@ -46,7 +46,7 @@
                             <td>
 
                                 <a class="btn btn-primary" asp-action="DetailsUsers" asp-route-id="@item.Email">Details</a>
-                                <a class="btn btn-danger" asp-action="DeleteUsers" asp-route-id="@item.Email">Delete</a>
+                                <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Email">Delete</a>
                             </td>
                         </tr>
                     }

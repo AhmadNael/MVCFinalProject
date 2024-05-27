@@ -40,6 +40,10 @@ namespace MVCFinalProject.Controllers
         public async Task<IActionResult> Index()
         {
             var id = HttpContext.Session.GetInt32("UserId");
+
+            var name = _context.Logins.Include(x => x.User).Include(x => x.Role).Where(x => x.UserId == id).FirstOrDefaultAsync();
+            var user = _context.Userinfos.SingleOrDefault(x=>x.Id==id);
+            ViewBag.name = user;
             var modelContext = _context.Testimonials.Include(t => t.Status).Include(t => t.User).
                  Where(t => t.Status.Id == 2);
             return View(await modelContext.ToListAsync());
@@ -48,13 +52,21 @@ namespace MVCFinalProject.Controllers
 
         public async Task<IActionResult> AllRecipes()
         {
-            var model = await _context.Recipes.Include(r => r.Category).Include(r => r.User).ToListAsync();
+            var id = HttpContext.Session.GetInt32("UserId");
+            if (id == null)
+            {
+                return RedirectToAction("Login", "LoginAndRegister");
+            }
+            var model = await _context.Recipes.Include(r => r.Category).Include(r => r.User).Where(x => x.Status.Id == 2).ToListAsync();
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> AllRecipes(string? name)
         {
-            var model = _context.Recipes.Include(r => r.Category).Include(r => r.User).Include(r => r.Status).AsQueryable();
+          
+            var model = _context.Recipes.Include(r => r.Category).Include(r => r.User).Include(r => r.Status)
+                .AsQueryable();
 
 
             if (!String.IsNullOrEmpty(name))
@@ -113,6 +125,11 @@ namespace MVCFinalProject.Controllers
 
         public async Task<IActionResult> ChefRecipes(decimal? id)
         {
+            var session_id = HttpContext.Session.GetInt32("UserId");
+            if (session_id == null)
+            {
+                return RedirectToAction("Login", "LoginAndRegister");
+            }
             var modelContext = _context.Recipes.Include(l => l.User).Where(x => x.UserId == id && x.StatusId == 2);
             return View(await modelContext.ToListAsync());
         }
@@ -120,6 +137,11 @@ namespace MVCFinalProject.Controllers
 
         public async Task<IActionResult> CategoryRecipes(decimal? id)
         {
+            var session_id = HttpContext.Session.GetInt32("UserId");
+            if (session_id == null)
+            {
+                return RedirectToAction("Login", "LoginAndRegister");
+            }
             var modelContext = _context.Recipes.Include(r => r.Category).Where(r => r.CategoryId == id);
             return View(await modelContext.ToListAsync());
         }
@@ -137,20 +159,29 @@ namespace MVCFinalProject.Controllers
         // GET: Testimonials/Create
         public IActionResult CreateTestimonial()
         {
+            var session_id = HttpContext.Session.GetInt32("UserId");
+            if (session_id == null)
+            {
+                return RedirectToAction("Login", "LoginAndRegister");
+            }
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Id");
             ViewData["UserId"] = new SelectList(_context.Userinfos, "Id", "Id");
             return View();
         }
 
         // POST: Testimonials/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTestimonial([Bind("TestId,CreationDate,Content,UserId,StatusId")] Testimonial testimonial)
         {
+            var session_id = HttpContext.Session.GetInt32("UserId");
             if (ModelState.IsValid)
             {
+                testimonial.UserId = session_id;
+                testimonial.StatusId = 1;
+
                 _context.Add(testimonial);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Testimonials));
@@ -202,6 +233,11 @@ namespace MVCFinalProject.Controllers
 
         public async Task<IActionResult> ProfileDetails(string? id = null)
         {
+            var session_id = HttpContext.Session.GetInt32("UserId");
+            if (session_id == null)
+            {
+                return RedirectToAction("Login", "LoginAndRegister");
+            }
             // If id is not provided, call GetEmail to fetch the admin email
             if (id == null)
             {
@@ -248,7 +284,7 @@ namespace MVCFinalProject.Controllers
         public async Task<IActionResult> UpdateProfile(string id, [Bind("Email,Password,UserName,UserId,RoleId")] Login login
             , string firstName, string lastName, DateTime birthDate, string img)
         {
-            var setion_id = HttpContext.Session.GetInt32("AdminId");
+            var setion_id = HttpContext.Session.GetInt32("UserId");
             if (id != login.Email)
             {
                 return NotFound();
@@ -297,6 +333,83 @@ namespace MVCFinalProject.Controllers
 
         // GET: paymentform
 
+        //public async Task<IActionResult> PaymentForm(decimal? id)
+        //{
+        //    if (id == null || _context.Recipes == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var recipe = await _context.Recipes
+        //        .Include(r => r.Category)
+        //        .Include(r => r.User)
+        //        .FirstOrDefaultAsync(m => m.RecipeId == id);
+
+        //    if (recipe == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(recipe);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> PaymentForm(decimal id, string nameCard, string cardNumber, DateTime expirationDate, int cvc)
+        //{
+        //    var session_id = HttpContext.Session.GetInt32("UserId");
+        //    var visa = await _context.VisaCheckers.SingleOrDefaultAsync(x => x.CardHolderName == nameCard && x.CardNumber == cardNumber && x.Id==1);
+        //    var recipe = await _context.Recipes.SingleOrDefaultAsync(x => x.RecipeId == id);
+
+
+        //    if (visa == null)
+        //    {
+        //        ModelState.AddModelError("", "Visa details are incorrect.");
+        //        return View();
+        //    }
+
+        //    if (visa.CardNumber != cardNumber)
+        //    {
+        //        ModelState.AddModelError("", "The Card number is wrong");
+        //        return View();
+        //    }
+
+        //    if (visa.Cvc != cvc)
+        //    {
+        //        ModelState.AddModelError("", "The CVC is wrong");
+        //        return View();
+        //    }
+
+        //    if (visa.CardHolderName != nameCard)
+        //    {
+        //        ModelState.AddModelError("", "The Card name is wrong");
+        //        return View();
+        //    }
+
+        //    decimal totalPrice = recipe.Price + (0.10M * recipe.Price);
+        //    if (visa.Balance < totalPrice)
+        //    {
+        //        ModelState.AddModelError("", "You don't have enough money");
+        //        return View();
+        //    }
+
+        //    Request request = new Request
+        //    {
+        //        RequsetDate = DateTime.Now,
+        //        UserId = session_id,
+        //        RecipeId = id,
+        //        RequestTax = 0.10M * recipe.Price
+        //    };
+        //    _context.Add(request);
+        //    await _context.SaveChangesAsync();
+        //    visa.Balance = visa.Balance - totalPrice;
+        //    _context.Update(visa);
+        //    await _context.SaveChangesAsync();
+
+        //    RecipeBuying((int)id); 
+        //    return RedirectToAction("Index", "Home"); 
+        //}
+
         public async Task<IActionResult> PaymentForm(decimal? id)
         {
             if (id == null || _context.Recipes == null)
@@ -322,8 +435,14 @@ namespace MVCFinalProject.Controllers
         public async Task<IActionResult> PaymentForm(decimal id, string nameCard, string cardNumber, DateTime expirationDate, int cvc)
         {
             var session_id = HttpContext.Session.GetInt32("UserId");
-            var visa = await _context.VisaCheckers.SingleOrDefaultAsync(x => x.CardHolderName == nameCard && x.CardNumber == cardNumber);
-            var recipe = await _context.Recipes.SingleOrDefaultAsync(x => x.RecipeId == id);
+            if (session_id == null)
+            {
+                ModelState.AddModelError("", "User is not logged in.");
+                return View();
+            }
+
+            VisaChecker visa =await _context.VisaCheckers
+                .FirstOrDefaultAsync(x=>x.Id==5)?? new VisaChecker();
 
             if (visa == null)
             {
@@ -331,47 +450,52 @@ namespace MVCFinalProject.Controllers
                 return View();
             }
 
-            if (visa.CardNumber != cardNumber)
-            {
-                ModelState.AddModelError("", "The Card number is wrong");
-                return View();
-            }
+            var recipe = await _context.Recipes
+                .SingleOrDefaultAsync(x => x.RecipeId == id);
 
-            if (visa.Cvc != cvc)
+            if (recipe == null)
             {
-                ModelState.AddModelError("", "The CVC is wrong");
-                return View();
-            }
-
-            if (visa.CardHolderName != nameCard)
-            {
-                ModelState.AddModelError("", "The Card name is wrong");
-                return View();
+                return NotFound();
             }
 
             decimal totalPrice = recipe.Price + (0.10M * recipe.Price);
+
             if (visa.Balance < totalPrice)
             {
-                ModelState.AddModelError("", "You don't have enough money");
-                return View();
+                ModelState.AddModelError("", "You don't have enough money.");
+                return View(recipe);
             }
 
-            // Create a new request
-            Request request = new Request
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                RequsetDate = DateTime.Now,
-                UserId = session_id,
-                RecipeId = id,
-                RequestTax = 0.10M * recipe.Price
-            };
-            _context.Add(request);
-            await _context.SaveChangesAsync();
+                try
+                {
+                    Request request = new Request
+                    {
+                        RequsetDate = DateTime.Now,
+                        UserId = session_id.Value,
+                        RecipeId = id,
+                        RequestTax = 0.10M * recipe.Price
+                    };
+                    _context.Add(request);
+                    await _context.SaveChangesAsync();
 
-            // Deduct the amount from visa balance
-            visa.Balance -= totalPrice;
-            await _context.SaveChangesAsync();
+                    visa.Balance -= totalPrice;
+                    _context.Update(visa);
+                    await _context.SaveChangesAsync();
 
-            return View("Success"); // Assuming you have a Success view
+                    await transaction.CommitAsync();
+
+                    RecipeBuying((int)id);
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again.");
+                    return View(recipe);
+                }
+            }
         }
 
 
@@ -420,7 +544,22 @@ namespace MVCFinalProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Aboutus()
+        {
+            var model = _context.Aboutus.Where(x => x.Id == 1).FirstOrDefault();
+            return View(model);
+        }
 
+        public async Task<IActionResult> MyOrders()
+        {
+            var session_id = HttpContext.Session.GetInt32("UserId");
+            if (session_id == null)
+            {
+                return RedirectToAction("Login", "LoginAndRegister");
+            }
+            var modelContext = _context.Requests.Include(r => r.Recipe).Include(r => r.User).Where(x=> x.User.Id == session_id);
+            return View(await modelContext.ToListAsync());
+        }
     }
 }
 

@@ -12,4 +12,6 @@ public partial class VisaChecker
     public string? CardNumber { get; set; }
 
     public decimal? Balance { get; set; }
+
+    public decimal Id { get; set; }
 }

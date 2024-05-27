@@ -36,7 +36,7 @@ namespace MVCFinalProject
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=LoginAndRegister}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

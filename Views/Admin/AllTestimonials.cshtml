@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>AllTestimonials</h1>
+
 
 <div class="card">
  <div class="card-body">
- <h4 class="card-title">Recipes</h4>
+        <h2 class="card-title">All Testimonials</h2>
   <table class="table">
     <thead>
         <tr>
@@ -54,6 +54,7 @@
                 <td>
                     <a class="btn btn-primary" asp-controller="Admin" asp-action="AcceptTestimonial" asp-route-id="@item.TestId">Accept</a>
                     <a class="btn btn-danger" asp-controller="Admin" asp-action="RejectTestimonial" asp-route-id="@item.TestId">Reject</a>
+                            <a class="btn btn-outline-danger" asp-controller="Admin" asp-action="DeleteTestimonial" asp-route-id="@item.TestId">Delete</a>
 
                 </td>
             </td>

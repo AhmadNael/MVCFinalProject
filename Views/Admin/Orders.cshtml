@@ -1,0 +1,113 @@
+﻿@model IEnumerable<MVCFinalProject.Models.Request>
+
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    .dt-buttons .dt-button {
+        background-color: #444;
+        color: #fff;
+        border: 1px solid #666;
+    }
+
+        .dt-buttons .dt-button:hover {
+            background-color: #555;
+            border-color: #777;
+        }
+
+        .dt-buttons .dt-button:active {
+            background-color: #333;
+            border-color: #555;
+        }
+
+        .dt-buttons .dt-button .button-text {
+            color: #fff;
+        }
+
+</style>
+<div class="container m-5 p-5">
+    <div class="table-responsive">
+        <form asp-action="Orders" method="post" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+            <input type="date" name="startDate" class="form-control-sm mx-2">
+            <input type="date" name="endDate" class="form-control-sm mx-2">
+            
+            <button type="submit" class="btn btn-primary mx-2">Search</button>
+        </form>
+        <table class="table" id="order">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Recipe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model!.Recipe!.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RequestTax)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RequsetDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item!.Recipe!.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item!.Recipe!.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequestTax)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequsetDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item!.User!.FirstName)
+                            @Html.DisplayFor(modelItem => item!.User!.LastName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js" defer></script>
+
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#order').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+</script>
